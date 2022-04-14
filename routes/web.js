@@ -9,4 +9,6 @@ router.get('/', (req, res) => {
 // Acesso restrito
 router.use('/adm', adm)
 
+
+
 module.exports = router
