@@ -3,7 +3,7 @@ const router = express.Router()
 const adm = require('./adm')
 
 const dbcon = require('../database/connection')
-dbcon.connect()
+dbcon.connect() // Abrindo conexão na rota principal do sistema, utilizado para exibir os materiais à usuários que não estão necessariamente logados.
 
 router.get('/', (req, res) => {
 

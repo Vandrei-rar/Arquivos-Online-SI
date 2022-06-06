@@ -1,12 +1,11 @@
-const req = require('express/lib/request');
 const dbcon = require('../database/connection')
 
-//Variavel teste
+//Variavel teste (em desuso com banco de dados online).
 let ra = 535187,
     senha = '2001',
     nome = 'Vands'
 
-
+// Verificando se há uma sessão existente.
 exports.iflogin = (req, res) => {
     if (req.session.login) { //Validando se o usuário está logado.
         res.render('./admin/dash');
@@ -17,7 +16,9 @@ exports.iflogin = (req, res) => {
       }
 }
 
-exports.login = (req, res) => {
+
+// Bloco usado para testar o funcionamento de sessões (em desuso com banco de dados online).
+/*exports.logintest = (req, res) => {
     if (req.body.ra == ra && req.body.senha == senha) {
         console.log("Logou");
         req.session.login = ra
@@ -27,28 +28,31 @@ exports.login = (req, res) => {
         res.redirect('/adm')
     }
 
-}
+}*/
 
-exports.login2 = (req, res) => {
+// Bloco que realiza a validação de login no sistema.
+exports.login = (req, res) => {
     (async () => {
-        const [nomes] = await dbcon.verifyIdentity(req.body.ra, req.body.senha);
+        const [nomes] = await dbcon.verifyIdentity(req.body.ra, req.body.senha); // Aguarda resposta da função verifyIndentity e armazena em um vetor.
 
+        // Se houver um nome no BD que corresponde às credenciais utilizadas, significa que há um usuário para login.
         if (nomes) {
             req.session.login = nomes
             console.log("Usuário logado: " + nomes.nome)
-            res.redirect('/adm')
+            res.redirect('/adm') // Sempre retorna para a rota /adm principal, lá existe uma verificação que chama a iflogin para autorizar ou não o acesso.
         }
         else{
             console.log('Credenciais inválidas.');
             res.redirect('/adm');
         }
 
-        global.nomes = nomes;
+        global.nomes = nomes; // Tornando a variavel nomes global para uso no arquivo atual.
 
     })()
     
 }
 
+// Bloco usado para realizar o logout, destruindo a sessão atual.
 exports.logout = (req, res) => {
     req.session.destroy()
     res.redirect('/adm')
