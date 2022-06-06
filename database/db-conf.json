@@ -1,7 +1,7 @@
 {
-    "host": "localhost",
-    "user": "vandrei",
-    "database": "sistemas",
-    "password": "vand2001",
-    "port": "3306"
+    "host": "db-mysql-para-teste-do-user-11543844-0.b.db.ondigitalocean.com",
+    "user": "doadmin",
+    "database": "defaultdb",
+    "password": "AVNS_0-Wt5qeuAZ1oOWZ",
+    "port": "25060"
 }
