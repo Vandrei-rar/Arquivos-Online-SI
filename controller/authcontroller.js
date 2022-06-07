@@ -8,7 +8,7 @@ let ra = 535187,
 // Verificando se há uma sessão existente.
 exports.iflogin = (req, res) => {
     if (req.session.login) { //Validando se o usuário está logado.
-        res.render('./admin/dash');
+        res.render('./admin/dash', {displayName: nomes.nome});
       } 
       else {
         // req.session.destroy();
