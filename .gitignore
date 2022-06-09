@@ -1,5 +1,3 @@
 # Ignorando config de acesso do DB.
 database/db-conf.json
 
-# Ignorando arquivo gitignore.
-.gitignore
