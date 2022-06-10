@@ -1,6 +1,7 @@
 const mysql = require('mysql2/promise')
 const dbconf = require('./db-conf.json')
 
+
 async function connect() { // Funcão principal de conexão com MySQL utilizando "promessas".
 
     // Verifica se já existe uma conexão, se sim, retorna a conexão existente, senão abre uma nova conexão.
@@ -16,6 +17,8 @@ async function connect() { // Funcão principal de conexão com MySQL utilizando
         port: dbconf.port
     })
     console.log("Banco de dados conectado!");
+
+
     
     // Atribuindo e retornando a conexão global.
     global.connection = connection
@@ -40,4 +43,13 @@ async function verifyIdentity(ra, psswd) { // Indentificando o professor no BD. 
     return rows; // Retornando a variavel exportada das linhas.
 }
 
-module.exports = {connect, verifyIdentity} // Exportando módulos para utilização em demais partes do sistema.
+async function queryCmd(cmd) {
+    const conn = await connect()
+
+    const [response] = await conn.query(cmd)
+    console.log(response); // ATÉ AQUI A RESPOSTA CORRETA CHEGA, APENAS ESTÁ FALHANDO AO PEGAR COMO JSON NA ROTA COM POSTMAN.
+    // exports.response = response
+    return response 
+}
+
+module.exports = {queryCmd, connect, verifyIdentity} // Exportando módulos para utilização em demais partes do sistema.

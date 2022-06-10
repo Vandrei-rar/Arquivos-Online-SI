@@ -6,6 +6,7 @@ const route = require('./routes/web')
 
 const app = express()
 app.use(bodyParser.urlencoded({extended: true}))
+app.use(bodyParser.json())
 
 // Set template
 app.engine('handlebars', exphbs({defaultLayout : 'main'}))
