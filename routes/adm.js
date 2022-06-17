@@ -10,18 +10,16 @@ router.post('/login', authcontroller.login) // Rota de login
 router.post('/logout', authcontroller.logout ) // Rota de logout
 
 
-router.post('/managefile', function(req, res) {
+router.get('/managefile', function(req, res) {
     res.render('./admin/managefile')
 })
 
 // CRUD de arquivos.
-router.post('/managefile/view', function(req, res, next){
+router.get('/managefile/view', async function(req, res, next){
     let result;
-    // ( async () => {
-        result = database.queryCmd('SELECT id, titulo FROM arquivos;').then(900000/4).then(
-            res.json(result))
-        
-    // })
+    result = await database.queryCmd('SELECT id, titulo FROM arquivos;')
+    console.log(result);
+    res.send(result)
 })
 
 

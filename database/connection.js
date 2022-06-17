@@ -47,9 +47,9 @@ async function queryCmd(cmd) {
     const conn = await connect()
 
     const [response] = await conn.query(cmd)
-    console.log(response); // ATÉ AQUI A RESPOSTA CORRETA CHEGA, APENAS ESTÁ FALHANDO AO PEGAR COMO JSON NA ROTA COM POSTMAN.
-    // exports.response = response
-    return response 
+    //console.log(response);
+    exports.result = response
+    return response
 }
 
 module.exports = {queryCmd, connect, verifyIdentity} // Exportando módulos para utilização em demais partes do sistema.
