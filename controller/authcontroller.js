@@ -1,3 +1,4 @@
+const flash = require('express-flash')
 const dbcon = require('../database/connection')
 
 //Variavel teste (em desuso com banco de dados online).
@@ -7,15 +8,18 @@ let ra = 535187,
 
 // Verificando se há uma sessão existente.
 exports.iflogin = (req, res) => {
-    if (req.session.login) { //Validando se o usuário está logado.
-        res.render('./admin/dash', {displayName: nomes.nome});
-      } 
-      else {
-        // req.session.destroy();
-        res.render('./admin/login');
-      }
-}
 
+        if (req.session.login) { //Validando se o usuário está logado.
+            res.render('./admin/dash', {displayName: nomes.nome})
+          } 
+        else {
+            // req.session.destroy();
+
+            // Passando pela resposta de RENDER o nome da flash message, e requerendo a mesma pela função req.flash()
+            res.render('./admin/login', {errorMsg : req.flash('errorMsg')})
+          }
+
+}
 
 // Bloco usado para testar o funcionamento de sessões (em desuso com banco de dados online).
 /*exports.logintest = (req, res) => {
@@ -42,6 +46,7 @@ exports.login = (req, res) => {
             res.redirect('/adm') // Sempre retorna para a rota /adm principal, lá existe uma verificação que chama a iflogin para autorizar ou não o acesso.
         }
         else{
+            req.flash('errorMsg', 'Credenciais inválidas!') // Definindo a flash message para erro de credenciais.
             console.log('Credenciais inválidas.');
             res.redirect('/adm');
         }

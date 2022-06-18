@@ -1,5 +1,9 @@
 <h1>Página de login do sistema</h1>
 
+{{#if errorMsg }} <!-- #se [houver mensagem passada] -->
+<div class="alert alert-danger">{{errorMsg}}</div>
+{{/if}}
+
 <form action="/adm/login" method="post">
     <input type="numeric" placeholder="Digite seu R.A" name="ra"><br><br> 
     <input type="password" placeholder="Digite sua senha" name="senha">

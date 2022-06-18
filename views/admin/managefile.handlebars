@@ -8,10 +8,24 @@
 <br><br><br>
 
 
-<form action="" method="post">
+{{!-- <form action="" method="post">
     <input type="text" placeholder="Nome do arquivo">
     <br><br>
     <input type="file" name="" id="">
 <br><br>
     <button type="submit">Upar arquivo</button>
+</form> --}}
+
+<form action="/adm/managefile/view" method="get">
+    <button type="submit">Ver arquivos existentes</button>
+</form>
+<br><br><br>
+
+
+
+<form action="/adm/managefile/create" method="post" enctype="multipart/form-data">
+    <input type="file" name="file" id="file">
+    <br>
+    <button type="submit">Adicionar</button>
+
 </form>
