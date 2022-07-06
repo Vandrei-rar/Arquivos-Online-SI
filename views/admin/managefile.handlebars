@@ -19,9 +19,22 @@
 <form action="/adm/managefile/view" method="get">
     <button type="submit">Ver arquivos existentes</button>
 </form>
+
+{{!-- <ul class="people_list">
+  {{#each this}}
+  <li>{{findResult}}</li>
+  {{/each}}
+</ul> --}}
+
 <br><br><br>
 
+{{#if errorUpload }} <!-- #se [houver mensagem de erro passada] -->
+<div class="alert alert-danger">{{errorUpload}}</div>
+{{/if}}
 
+{{#if successUpload }} <!-- #se [houver mensagem de sucesso passada] -->
+<div class="alert alert-success">{{successUpload}}</div>
+{{/if}}
 
 <form action="/adm/managefile/create" method="post" enctype="multipart/form-data">
     <input type="file" name="file" id="file">

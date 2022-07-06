@@ -3,15 +3,15 @@ const multer = require('multer') // Lib para realizar o filtro e alicação de a
 
 module.exports = (multer({
 
-    storage: multer.diskStorage({
+    storage: multer.diskStorage({ // Propriedade "storage" define os parâmetros de onde o arquivo será armazenado.
 
-        destination: (req, file, cb) => {
+        destination: (req, file, cb) => { // Destino do arquivo, indicado na linha 10. (cb significa Callback)
 
             cb(null, './uploads/files')
 
         },
 
-        filename: (req, file, cb) => {
+        filename: (req, file, cb) => { // Definindo o nome do arquivo, neste caso utilizando o nome padrão com a data/hora do sistema.
 
             cb(null, Date.now().toString() + '-' + file.originalname)
 
@@ -19,7 +19,7 @@ module.exports = (multer({
 
     }),
 
-    fileFilter: (req, file, cb) => {
+    fileFilter: (req, file, cb) => { // Filtro para tipos de arquivos diferentes, o que pode ou não ser anexado.
 
         // Formatos aceitos podem ser inseridos dentro do vetor, ao invés de fazer vários IF's.
         const isAccepted = ['image/png', 'image/jpg', 'image/jpeg', 'application/pdf'].find( formatoAceito => formatoAceito == file.mimetype );

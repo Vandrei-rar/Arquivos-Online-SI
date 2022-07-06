@@ -3,6 +3,7 @@ const multer = require('../middleware/multer');
 const router = express.Router()
 const authcontroller = require('../controller/authcontroller');
 const database = require('../database/connection')
+const flash = require('express-flash')
 
 
 router.get('/', authcontroller.iflogin) // Ao entrar na rota principal /adm/, há uma verificação de sessão, se há ou não alguma sessão aberta.
@@ -25,15 +26,21 @@ router.get('/managefile/view', async function(req, res, next){
 
     // }
 
-    res.send(result)
+    // res.send(result)
+    console.log(result);
+    res.render('./admin/managefile', {findResult: result})
 })
-
+    // Adicionando arquivos
 router.post('/managefile/create', multer.single('file'), (req, res) => {
     if (req.file) {
-        return res.send(req.file)
+        req.flash('successUpload', 'Arquivo armazenado com sucesso!') // Mensagem flash para retorno para o usuário.
+        return res.render('./admin/managefile', {successUpload: req.flash('successUpload')})
+        // return res.send(req.file)
+    }else{
+        req.flash('errorUpload', 'Tipo de arquivo não suportado!')
+        return res.render('./admin/managefile', {errorUpload: req.flash('errorUpload')})
     }
 
-    return res.send('Erro no upload!')
 })
 
 module.exports = router
