@@ -11,13 +11,13 @@ exports.iflogin = (req, res) => {
 
         if (req.session.login) { //Validando se o usuário está logado.
             res.render('./admin/dash', {displayName: nomes.nome})
-          } 
+        } 
         else {
             // req.session.destroy();
 
             // Passando pela resposta de RENDER o nome da flash message, e requerendo a mesma pela função req.flash()
             res.render('./admin/login', {errorMsg : req.flash('errorMsg')})
-          }
+        }
 
 }
 

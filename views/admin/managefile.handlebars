@@ -1,9 +1,10 @@
+<link rel="stylesheet" href="/managefile.css" />
+
 <h1>Página para gerenciar seus arquivos.</h1>
 
 <form action="/adm" method="get">
     <button type="submit">Voltar</button>
 </form>
-
 
 <br><br><br>
 
@@ -18,6 +19,22 @@
 
 <form action="/adm/managefile/view" method="get">
     <button type="submit">Ver arquivos existentes</button>
+
+    <table>
+        <tr>
+            <th>Nome do arquivo</th>
+            <th>Matéria</th>
+            <th>Criado em</th>
+            <th>Atualizado em</th>
+
+        </tr>
+        <tr>
+            <td>Conteudo</td>
+            <td>Conteudo</td>
+            <td>Conteudo</td>           
+        </tr>
+    </table>
+
 </form>
 
 {{!-- <ul class="people_list">
