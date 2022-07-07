@@ -21,18 +21,25 @@
     <button type="submit">Ver arquivos existentes</button>
 
     <table>
-        <tr>
-            <th>Nome do arquivo</th>
-            <th>Matéria</th>
-            <th>Criado em</th>
-            <th>Atualizado em</th>
-
-        </tr>
-        <tr>
-            <td>Conteudo</td>
-            <td>Conteudo</td>
-            <td>Conteudo</td>           
-        </tr>
+        <thead>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Titulo</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#if findResult}}
+                {{#each findResult}}
+                    <tr>
+                        <td>{{'id'}}</td>
+                        <td>{{'titulo'}}</td>
+                    </tr>
+                {{/each}}
+            {{/if}}
+        </tbody>
+            
+        
+        
     </table>
 
 </form>

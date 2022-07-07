@@ -1,7 +1,3 @@
-const express = require('express')
-const flash = require('express-flash')
-
-
 
 exports.check = (req, res, next) => {
     if (req.session.login) { //Validando se o usuário está logado.

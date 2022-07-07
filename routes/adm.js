@@ -25,10 +25,6 @@ router.get('/managefile/view', sessionCheck.check, async function(req, res, next
     result = await database.queryCmd('SELECT id, titulo FROM arquivos;')
     // console.log(result);
 
-    // dataDisplay = (result) => {
-
-    // }
-
     // res.send(result)
     console.log(result);
     res.render('./admin/managefile', {findResult: result})
