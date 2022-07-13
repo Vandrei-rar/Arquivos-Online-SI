@@ -1,3 +1,4 @@
 # Ignorando config de acesso do DB.
 database/db-conf.json
+uploads/files/
 

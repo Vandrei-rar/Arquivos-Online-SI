@@ -23,16 +23,19 @@
     <table>
         <thead>
             <tr>
-                <th scope="col">ID</th>
                 <th scope="col">Titulo</th>
+                <th scope="col">Matéria</th>
+                <th scope="col">Data de upload</th>
             </tr>
         </thead>
         <tbody>
             {{#if findResult}}
                 {{#each findResult}}
                     <tr>
-                        <td>{{'id'}}</td>
                         <td>{{'titulo'}}</td>
+                        <td>{{'nome'}}</td>
+                        <td>{{'criado_em'}}</td>
+                        
                     </tr>
                 {{/each}}
             {{/if}}
