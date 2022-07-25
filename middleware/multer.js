@@ -14,8 +14,10 @@ module.exports = (multer({
         filename: (req, file, cb) => { // Definindo o nome do arquivo, neste caso utilizando o nome padrão com a data/hora do sistema.
             let now = new Date // Definindo o objeto para manipulação.
 
+
             // getDate trás o dia do mês, getMonth trás o mês do ano, adiciona-se 1 pois a contagem no JS começa como janeiro sendo mês 0, getFullYear trás o ano.
-            cb(null, (now.getDate()) + '_' + (now.getMonth() + 1) + '_' + (now.getFullYear()) + '-' + file.originalname)
+            // cb(null, (now.getDate()) + '_' + (now.getMonth() + 1) + '_' + (now.getFullYear()) + '-' + file.originalname)
+            cb(null, file.originalname)
 
 
         }

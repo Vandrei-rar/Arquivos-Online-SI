@@ -6,6 +6,7 @@ const sessionCheck = require('../middleware/sessionCheck')
 const database = require('../database/connection')
 const mysql = require('mysql2/promise')
 const flash = require('express-flash')
+const fs = require('fs')
 
 
 router.get('/', authcontroller.iflogin) // Ao entrar na rota principal /adm/, há uma verificação de sessão, se há ou não alguma sessão aberta.
@@ -27,16 +28,15 @@ router.get('/managefile/view', sessionCheck.check, async function(req, res, next
 
     result = await database.queryCmd(qry)
     // SELECT id, titulo FROM arquivos;
-    // console.log(result);
 
-    console.log(result);
+    // console.log(result);
     res.render('./admin/managefile', {findResult: result}) // Chamando a página managefile passando o parâmetro 'result' para manipular internamente no handlebars.
+
 })
 
     // Adicionando arquivos
 router.post('/managefile/create', sessionCheck.check, multer.single('file'), async function(req, res){
     if (req.file) {
-        let anonymousResult // Variavel com nome de anonoymous por que ela serve apenas para guardar a informação de INSERT, não é utilizada posteriormente, apenas para realizar o código SQL.
 
         // Vetor constante materiaDetector serve para identificar qual a matéria correspondente do professor logado na sessão atual do sistema. Para realizar o insert corretamente e isolar arquivos por matérias e professores. Dessa forma um professor não consegue ver os arquivos dos outros, mantendo a ordem e organização.
         // Utiliza-se um vetor na mesma lógica do arquivo "authcontroller", a resposta do BD chega como um objeto, portanto deve-se manipular com um vetor.
@@ -45,7 +45,7 @@ router.post('/managefile/create', sessionCheck.check, multer.single('file'), asy
 
 
         // Inserindo arquivos com seus nomes e respectivos locais no servidor, com a separação por matéria.
-        anonymousResult = await database.queryCmd('INSERT INTO arquivos (titulo, arquivo, fk_materia) VALUES (' + mysql.escape(req.file.originalname) + ',' + mysql.escape(req.file.destination) + ',' + await materiaDetector['FK_PROFESSOR'] + ');')
+        await database.queryCmd('INSERT INTO arquivos (titulo, arquivo, fk_materia) VALUES (' + mysql.escape(req.file.originalname) + ',' + mysql.escape(req.file.destination) + ',' + await materiaDetector['FK_PROFESSOR'] + ');')
 
         req.flash('successUpload', 'Arquivo armazenado com sucesso!') // Mensagem flash de sucesso para retorno para o usuário.
         return res.render('./admin/managefile', {successUpload: req.flash('successUpload')})
@@ -57,7 +57,14 @@ router.post('/managefile/create', sessionCheck.check, multer.single('file'), asy
 
 })
 
-router.post('/managefile/delete', sessionCheck.check, async function(req, res){
+router.post('/managefile/delete/:titulo', sessionCheck.check, async function(req, res){ // Rota post para enviar a informação de deletar
+    
+    let fileName = req.params.titulo // Pelos parametros da URL captura-se o que vem no :titulo enviado pelo managefile.handlebars
+
+    await fs.unlinkSync('./uploads/files/' + fileName) // Função assíncrona para exclusão de arquivos no diretório estático.
+    await database.queryCmd("DELETE FROM arquivos WHERE titulo = " + mysql.escape(fileName)) // Função assíncrona para exclusão do registro no banco de dados.
+
+    res.redirect('/adm/managefile/view')
 
 })
 

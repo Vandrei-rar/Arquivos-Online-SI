@@ -35,6 +35,9 @@
                         <td>{{'titulo'}}</td>
                         <td>{{'nome'}}</td>
                         <td>{{'criado_em'}}</td>
+                        <td class="del-btn">
+                            <button type="submit" formmethod="post" formaction="/adm/managefile/delete/{{'titulo'}}" class="gg-trash"></button>
+                        </td>
                         
                     </tr>
                 {{/each}}

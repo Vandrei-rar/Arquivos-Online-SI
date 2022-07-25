@@ -1,12 +1,24 @@
-<h1>Página de login do sistema</h1>
+<link rel="stylesheet" href="/style.css">
 
-{{#if errorMsg }} <!-- #se [houver mensagem passada] -->
-<div class="alert alert-danger">{{errorMsg}}</div>
-{{/if}}
+{{!-- <h1>Página de login do sistema</h1> --}}
 
-<form action="/adm/login" method="post">
-    <input type="numeric" placeholder="Digite seu R.A" name="ra"><br><br> 
-    <input type="password" placeholder="Digite sua senha" name="senha">
-        <br><br>
-    <input type="submit" name="acao" value="Acessar">
-</form>
+
+
+<section class="form-login container">
+    <form action="/adm/login" class="login__mold" method="post">
+        <h3 class="title__login d-flex justify-content-center">Login</h2>
+        <div>
+            <input type="numeric" class="form-control input__text" placeholder="Digite seu R.A" name="ra">
+        </div>
+        <div class="login__input">
+            <input type="password" class="form-control input__text" placeholder="Digite sua senha" name="senha">
+        </div>
+        {{#if errorMsg }} <!-- #se [houver mensagem passada] -->
+            <div class="alert alert-danger">{{errorMsg}}</div>
+        {{/if}}
+         <div class="d-flex justify-content-center">
+            <input type="submit" class="btn btn__login" name="acao" value="Acessar">
+        </div>
+
+    </form>
+</section>
