@@ -1,9 +1,31 @@
+<link rel="stylesheet" href="/dash.css">
+
+
+
 <h1>Seja bem-vindo à dashboard, {{displayName}} !</h1>
 
 <form action="/adm/logout" method="post">
+
+    {{!-- <ul class="nav flex-column">
+    <li class="nav-item">
+        <a class="nav-link active" aria-current="page" href="#">Active</a>
+    </li>
+    <li class="nav-item">
+        <input type="submit" value="Sair" class="nav-link">Sair</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="#">Link</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link disabled">Disabled</a>
+    </li>
+    </ul> --}}
+
     <button type="submit">Sair</button>
 </form>
+
 <br>
+
 <form action="/adm/managefile" method="get">
     <button type="submit">Adicionar Arquivos</button>
 </form>

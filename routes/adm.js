@@ -41,7 +41,7 @@ router.post('/managefile/create', sessionCheck.check, multer.single('file'), asy
         // Vetor constante materiaDetector serve para identificar qual a matéria correspondente do professor logado na sessão atual do sistema. Para realizar o insert corretamente e isolar arquivos por matérias e professores. Dessa forma um professor não consegue ver os arquivos dos outros, mantendo a ordem e organização.
         // Utiliza-se um vetor na mesma lógica do arquivo "authcontroller", a resposta do BD chega como um objeto, portanto deve-se manipular com um vetor.
         const [materiaDetector] = await database.queryCmd("SELECT materias.FK_PROFESSOR FROM materias INNER JOIN professores WHERE materias.FK_PROFESSOR = professores.IDRA AND professores.nome = " + mysql.escape(req.session.login.nome) + ";")
-        // console.log(materiaDetector);
+        //console.log(materiaDetector);
 
 
         // Inserindo arquivos com seus nomes e respectivos locais no servidor, com a separação por matéria.
