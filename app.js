@@ -16,6 +16,7 @@ app.engine('handlebars', exphbs({defaultLayout : 'main'}))
 app.set('view engine', 'handlebars')
 app.use(express.static(path.join(__dirname, 'views/css/'))) // Indicando pasta de arquivos estáticos css, pode ser usado para js e outros.
 app.use(express.static(path.join(__dirname, 'views/img/')))
+app.use(express.static(path.join(__dirname, 'views/js/')))
 
 // app.use(flash({ sessionKeyName: 'flashMessage', useCookieSession: true }));
 app.use(flash())

@@ -24,7 +24,7 @@ router.get('/managefile', sessionCheck.check, function(req, res) {
 // CRUD de arquivos.
 router.get('/managefile/view', sessionCheck.check, async function(req, res, next){
     let result,
-        qry = "SELECT arquivos.titulo, arquivos.criado_em, materias.nome, materias.fk_professor FROM arquivos INNER JOIN materias, professores WHERE fk_materia = materias.id AND materias.fk_professor = professores.idra AND professores.nome = " + mysql.escape(req.session.login.nome) + ";"
+        qry = "SELECT arquivos.titulo, arquivos.criado_em, materias.nome, materias.fk_professor FROM arquivos INNER JOIN materias, professores WHERE fk_materia = materias.id AND materias.fk_professor = professores.chapa AND professores.nome = " + mysql.escape(req.session.login.nome) + ";"
 
     result = await database.queryCmd(qry)
     // SELECT id, titulo FROM arquivos;
@@ -40,7 +40,7 @@ router.post('/managefile/create', sessionCheck.check, multer.single('file'), asy
 
         // Vetor constante materiaDetector serve para identificar qual a matéria correspondente do professor logado na sessão atual do sistema. Para realizar o insert corretamente e isolar arquivos por matérias e professores. Dessa forma um professor não consegue ver os arquivos dos outros, mantendo a ordem e organização.
         // Utiliza-se um vetor na mesma lógica do arquivo "authcontroller", a resposta do BD chega como um objeto, portanto deve-se manipular com um vetor.
-        const [materiaDetector] = await database.queryCmd("SELECT materias.FK_PROFESSOR FROM materias INNER JOIN professores WHERE materias.FK_PROFESSOR = professores.IDRA AND professores.nome = " + mysql.escape(req.session.login.nome) + ";")
+        const [materiaDetector] = await database.queryCmd("SELECT materias.FK_PROFESSOR FROM materias INNER JOIN professores WHERE materias.FK_PROFESSOR = professores.CHAPA AND professores.nome = " + mysql.escape(req.session.login.nome) + ";")
         //console.log(materiaDetector);
 
 

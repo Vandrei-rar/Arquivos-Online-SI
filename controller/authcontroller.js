@@ -37,7 +37,7 @@ exports.iflogin = (req, res) => {
 // Bloco que realiza a validação de login no sistema.
 exports.login = (req, res) => {
     (async () => {
-        const [nomes] = await dbcon.verifyIdentity(req.body.ra, req.body.senha); // Aguarda resposta da função verifyIndentity e armazena em um vetor.
+        const [nomes] = await dbcon.verifyIdentity(req.body.chapa, req.body.senha); // Aguarda resposta da função verifyIndentity e armazena em um vetor.
 
         // Se houver um nome no BD que corresponde às credenciais utilizadas, significa que há um usuário para login.
         if (nomes) {

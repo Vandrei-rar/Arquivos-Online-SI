@@ -32,11 +32,11 @@ async function connect() { // Funcão principal de conexão com MySQL utilizando
 //     return await search.execute('SELECT * FROM `professores`;')
 // }
 
-async function verifyIdentity(ra, psswd) { // Indentificando o professor no BD. Com função assíncrona.
+async function verifyIdentity(chapa, psswd) { // Indentificando o professor no BD. Com função assíncrona.
     const search = await connect() // Guardando a conexão do banco de dados na constante.
     
     // Query de busca, valida como logado quando o nome correspondente à RA e SENHA existir.
-    var sqlquery = "SELECT nome FROM professores WHERE idra = " + mysql.escape(ra) + " AND senha = " + mysql.escape(psswd);
+    var sqlquery = "SELECT nome FROM professores WHERE chapa = " + mysql.escape(chapa) + " AND senha = " + mysql.escape(psswd);
     const [rows] = await search.query(sqlquery) // Armazena a resposta do BD em vetor para melhor manipulação.
 
     exports.rows = rows; // Exportando as linhas para usar posteriormente.
