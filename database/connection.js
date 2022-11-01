@@ -9,20 +9,25 @@ async function connect() { // Funcão principal de conexão com MySQL utilizando
         return global.connection
     }
 
-    const connection = mysql.createConnection({ // Credenciais puxadas do arquivo db-conf.json.
-        host: dbconf.host,
-        user: dbconf.user,
-        password: dbconf.password,
-        database: dbconf.database,
-        port: dbconf.port
-    })
-    console.log("Banco de dados conectado!");
+    try {
+        const connection = await mysql.createConnection({ // Credenciais puxadas do arquivo db-conf.json.
+            host: dbconf.host,
+            user: dbconf.user,
+            password: dbconf.password,
+            database: dbconf.database,
+            port: dbconf.port
+        })
 
+        // Atribuindo e retornando a conexão global.
+        global.connection = connection
+        console.log("Banco de dados conectado!");
+        return connection
 
-    
-    // Atribuindo e retornando a conexão global.
-    global.connection = connection
-    return connection
+    } catch (err) {
+        console.log("Erro na conexão do banco de dados -> " + err);
+
+    }
+
 }
 
 
@@ -35,21 +40,32 @@ async function connect() { // Funcão principal de conexão com MySQL utilizando
 async function verifyIdentity(chapa, psswd) { // Indentificando o professor no BD. Com função assíncrona.
     const search = await connect() // Guardando a conexão do banco de dados na constante.
     
-    // Query de busca, valida como logado quando o nome correspondente à RA e SENHA existir.
-    var sqlquery = "SELECT nome FROM professores WHERE chapa = " + mysql.escape(chapa) + " AND senha = " + mysql.escape(psswd);
-    const [rows] = await search.query(sqlquery) // Armazena a resposta do BD em vetor para melhor manipulação.
+    try {
+        // Query de busca, valida como logado quando o nome correspondente à RA e SENHA existir.
+        var sqlquery = "SELECT nome FROM professores WHERE chapa = " + mysql.escape(chapa) + " AND senha = " + mysql.escape(psswd);
+        const [rows] = await search.query(sqlquery) // Armazena a resposta do BD em vetor para melhor manipulação.
 
-    exports.rows = rows; // Exportando as linhas para usar posteriormente.
-    return rows; // Retornando a variavel exportada das linhas.
+        exports.rows = rows; // Exportando as linhas para usar posteriormente.
+        return rows; // Retornando a variavel exportada das linhas.
+
+    } catch (err) {
+        console.log("Erro de validação de usuário -> " + err);
+    }
+
 }
 
 async function queryCmd(cmd) {
     const conn = await connect()
 
-    const [response] = await conn.query(cmd)
-    //console.log(response);
-    exports.result = response
-    return response
+    try {
+        const [response] = await conn.query(cmd)
+        //console.log(response);
+        exports.result = response
+        return response
+    } catch (err) {
+        console.log("Erro ao executar uma query -> " + err);
+    }
+
 }
 
 module.exports = {queryCmd, connect, verifyIdentity} // Exportando módulos para utilização em demais partes do sistema.

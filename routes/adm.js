@@ -10,7 +10,7 @@ router.get('/', authcontroller.iflogin) // Ao entrar na rota principal /adm/, h√
 router.post('/login', authcontroller.login) // Rota de login
 router.post('/logout', authcontroller.logout ) // Rota de logout
 
-
+// CRUD de arquivos
 router.get('/managefile', sessionCheck.check, filecontroller.viewFiles)
 router.post('/managefile/create', sessionCheck.check, multer.single('file'), filecontroller.createFiles )
 router.post('/managefile/delete/:titulo', sessionCheck.check, filecontroller.destroyFiles)
