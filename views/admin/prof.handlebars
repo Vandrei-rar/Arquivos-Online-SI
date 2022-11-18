@@ -1,43 +1,40 @@
 <link rel="stylesheet" href="../dash.css">
 
 <body class="sb-nav-fixed">
-    
     {{> navbar}}
     
     <div id="layoutSidenav">
-    
         {{> dashsidebar}}
-        
         
         <div id="layoutSidenav_content">
             <main>
                 <div class="container-fluid px-4">
                     {{!-- Conteúdo da página abaixo --}}
-                    {{> createbutton }}
+                    {{> triggerButtonPopup bootstrapClassBtn="btn-success" icon="fa-solid fa-plus" title="Novo" target="novoProf" }}
                     <div class="card mb-4">
                         <div class="card-header">
                             <i class="fas fa-table me-1"></i>
-                            Arquivos
+                            <span>Professores</span>
                         </div>
                         <div class="card-body">
                             <form>
                                 <table id="datatablesSimple" class="table table-striped">
                                     <thead>
                                         <tr>
-                                            <th>Titulo</th>
-                                            <th>Matéria</th>
-                                            <th>Data de upload</th>
+                                            <th>Nome</th>
+                                            <th>Sobrenome</th>
+                                            <th>Chapa</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         {{#if findResult}}
                                             {{#each findResult}}
                                                 <tr>
-                                                    <td>{{'titulo'}}</td>
                                                     <td>{{'nome'}}</td>
-                                                    <td>{{'criado_em'}}</td>
+                                                    <td>{{'sobrenome'}}</td>
+                                                    <td>{{'chapa'}}</td>
                                                     <td class="del-btn">
-                                                        <button type="submit" formmethod="post" formaction="/adm/managefile/delete/{{'titulo'}}"><i class="fas fa-trash"></i></button>
+                                                        <button type="submit" formmethod="post" formaction="/adm/prof/delete/{{'chapa'}}"><i class="fas fa-trash"></i></button>
                                                     </td>
                                                 </tr>
                                             {{/each}}
@@ -47,15 +44,41 @@
                             </form>
                         </div>
                     </div>
-
-
-                    <form action="/adm/managefile/create" method="post" enctype="multipart/form-data">
+                    {{!-- <form action="/adm/managefile/create" method="post" enctype="multipart/form-data">
                         <input type="file" name="file" id="file">
                         <br>
                         <button type="submit">Adicionar</button>
 
-                    </form>
+                    </form> --}}
 
+                </div>
+                <!-- Pop-up -->
+                <div id="novoProf" class="modal">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <p> Novo Professor </p>
+                            </div>
+                            <form>
+                            <div class="modal-body">
+                                <input type="number" class="form-control" name="profId" id="profId" placeholder="Chapa"><br>
+                                <input type="text" class="form-control" name="profName" id="profName" placeholder="Nome"><br>
+                                <input type="text" class="form-control" name="profLastname" id="profLastname" placeholder="Sobrenome"><br>
+                                <input type="text" class="form-control" name="profMatery" id="profMatery" placeholder="Matéria"><br>
+                                <input type="password" class="form-control" name="defaultPassword" id="defaultPassword" placeholder="Senha padrão"><br>
+                                <input class="form-check-input" type="checkbox" name="coordCheck" id="coordCheck">
+                                <label class="form-check-label">
+                                    Professor Coordenador
+                                </label>
+                            
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                <button type="submit" class="btn btn-success" formmethod="post" formaction="/adm/prof/create">Criar</button>
+                            </div>
+                            </form>
+                        </div>
+                    </div>
                 </div>
             </main>
             {{> dashfooter}}
@@ -70,11 +93,6 @@
     <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" crossorigin="anonymous"></script>
     <script src="js/datatables-simple-demo.js"></script>
 </body>
-
-
-
-
-
 {{!-- <ul class="people_list">
   {{#each this}}
   <li>{{findResult}}</li>
