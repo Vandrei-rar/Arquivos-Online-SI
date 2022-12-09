@@ -15,20 +15,24 @@ exports.viewFiles = async (req, res) =>{
 
 exports.createFiles = async (req, res) => {
     if (req.file) {
+        try {
+            // Vetor constante materiaDetector serve para identificar qual a matéria correspondente do professor logado na sessão atual do sistema. Para realizar o insert corretamente e isolar arquivos por matérias e professores. Dessa forma um professor não consegue ver os arquivos dos outros, mantendo a ordem e organização.
+            // Utiliza-se um vetor na mesma lógica do arquivo "authcontroller", a resposta do BD chega como um objeto, portanto deve-se manipular com um vetor.
+            const [materiaDetector] = await dbcon.queryCmd("SELECT materias.FK_PROFESSOR FROM materias INNER JOIN professores WHERE materias.FK_PROFESSOR = professores.CHAPA AND professores.nome = " + mysql.escape(req.session.login.nome) + ";")
+            //console.log(materiaDetector);
 
-        // Vetor constante materiaDetector serve para identificar qual a matéria correspondente do professor logado na sessão atual do sistema. Para realizar o insert corretamente e isolar arquivos por matérias e professores. Dessa forma um professor não consegue ver os arquivos dos outros, mantendo a ordem e organização.
-        // Utiliza-se um vetor na mesma lógica do arquivo "authcontroller", a resposta do BD chega como um objeto, portanto deve-se manipular com um vetor.
-        const [materiaDetector] = await dbcon.queryCmd("SELECT materias.FK_PROFESSOR FROM materias INNER JOIN professores WHERE materias.FK_PROFESSOR = professores.CHAPA AND professores.nome = " + mysql.escape(req.session.login.nome) + ";")
-        //console.log(materiaDetector);
+            // Inserindo arquivos com seus nomes e respectivos locais no servidor, com a separação por matéria.
+            await dbcon.queryCmd('INSERT INTO arquivos (titulo, arquivo, fk_materia) VALUES (' + mysql.escape(req.file.originalname) + ',' + mysql.escape(req.file.destination) + ',' + await materiaDetector['FK_PROFESSOR'] + ');')
 
+            req.flash('successUpload', 'Arquivo armazenado com sucesso!') // Mensagem flash de sucesso para retorno para o usuário.
+            return res.redirect('/adm/managefile')
 
-        // Inserindo arquivos com seus nomes e respectivos locais no servidor, com a separação por matéria.
-        await dbcon.queryCmd('INSERT INTO arquivos (titulo, arquivo, fk_materia) VALUES (' + mysql.escape(req.file.originalname) + ',' + mysql.escape(req.file.destination) + ',' + await materiaDetector['FK_PROFESSOR'] + ');')
-
-        req.flash('successUpload', 'Arquivo armazenado com sucesso!') // Mensagem flash de sucesso para retorno para o usuário.
-        // return res.render('./admin/managefile', {successUpload: req.flash('successUpload')})
-        return res.redirect('/adm/managefile')
-        // return res.send(req.file)
+        } catch (err) {
+            console.log("Erro detectado: ", err)
+            req.flash('err', 'Ocorreu algum erro')// Mensagem flash de erro para retorno para o usuário.
+            return res.render('./admin/managefile', {errorUpload: req.flash('err')}) 
+        }
+        
     }else{
         req.flash('errorUpload', 'Tipo de arquivo não suportado!')// Mensagem flash de erro para retorno para o usuário.
         return res.render('./admin/managefile', {errorUpload: req.flash('errorUpload')}) 

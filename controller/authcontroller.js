@@ -9,15 +9,16 @@ let ra = 535187,
 // Verificando se há uma sessão existente.
 exports.iflogin = (req, res) => {
 
-        if (req.session.login) { //Validando se o usuário está logado.
-            res.render('./admin/dash', {displayName: nomes.nome})
-        } 
-        else {
-            // req.session.destroy();
-
-            // Passando pela resposta de RENDER o nome da flash message, e requerendo a mesma pela função req.flash()
-            res.render('./admin/login', {errorMsg : req.flash('errorMsg')})
-        }
+    if (req.session.login && req.session.login == "coord") { //Validando se o usuário está logado.
+        res.render('./admin/dash', {displayName: nomes.nome, isCoord: true})
+    }
+    else if (req.session.login){
+        res.render('./admin/dash', {displayName: nomes.nome})
+    }
+    else {
+        // Passando pela resposta de RENDER o nome da flash message, e requerendo a mesma pela função req.flash()
+        res.render('./admin/login', {errorMsg : req.flash('errorMsg')})
+    }
 
 }
 
@@ -41,7 +42,12 @@ exports.login = (req, res) => {
             const [nomes] = await dbcon.verifyIdentity(req.body.chapa, req.body.senha); // Aguarda resposta da função verifyIndentity e armazena em um vetor.
 
             // Se houver um nome no BD que corresponde às credenciais utilizadas, significa que há um usuário para login.
-            if (nomes) {
+            if (nomes['coordenador'] == "Sim") {
+                req.session.login = "coord", nomes
+                console.log("Usuário logado: " + nomes.nome)
+                res.redirect('/adm') // Sempre retorna para a rota /adm principal, lá existe uma verificação que chama a iflogin para autorizar ou não o acesso.
+            }
+            else if (nomes) {
                 req.session.login = nomes
                 console.log("Usuário logado: " + nomes.nome)
                 res.redirect('/adm') // Sempre retorna para a rota /adm principal, lá existe uma verificação que chama a iflogin para autorizar ou não o acesso.

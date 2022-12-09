@@ -18,7 +18,14 @@
             <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid px-4">
-                        <h1 class="mt-4">Oi</h1>
+                        <h1 class="mt-4">Olá,</h1>
+                        {{#if isCoord}}
+                        <h1 class="mt-1"> Coordenador</h1>
+
+                            {{else}}
+                                <h1 class="mt-1"> Professor</h1>
+
+                        {{/if}}
                         <ol class="breadcrumb mb-4">
                             <li class="breadcrumb-item active">Dashboard</li>
                         </ol>

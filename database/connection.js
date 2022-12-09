@@ -42,7 +42,7 @@ async function verifyIdentity(chapa, psswd) { // Indentificando o professor no B
     
     try {
         // Query de busca, valida como logado quando o nome correspondente à RA e SENHA existir.
-        var sqlquery = "SELECT nome FROM professores WHERE chapa = " + mysql.escape(chapa) + " AND senha = " + mysql.escape(psswd);
+        var sqlquery = "SELECT nome, coordenador FROM professores WHERE chapa = " + mysql.escape(chapa) + " AND senha = " + mysql.escape(psswd);
         const [rows] = await search.query(sqlquery) // Armazena a resposta do BD em vetor para melhor manipulação.
 
         exports.rows = rows; // Exportando as linhas para usar posteriormente.
