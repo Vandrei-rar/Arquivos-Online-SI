@@ -3,19 +3,16 @@ const mysql = require('mysql2/promise')
 
 exports.viewProfessors = async (req, res) => {
     let result, qry = "SELECT professores.nome, professores.sobrenome, professores.chapa, professores.coordenador FROM professores;"
-
     result = await dbcon.queryCmd(qry)
 
-    res.render('./admin/prof', {findResult: result})
+    res.render('./admin/prof', {findResult: result, displayName: userSession.nome, isCoord: userSession.coordenador})
 }
 
 exports.createProfessors = async (req, res) => {
-    let isCoord
-    if (req.body.coordCheck == "on") {
-        isCoord = "Sim"
-    }else{
-        isCoord = "Não"
-    }
+    let isCoord, checkedCoord
+
+    checkedCoord = req.body.coordCheck
+    checkedCoord ? isCoord = "Sim" : isCoord = "Não"
 
     await dbcon.queryCmd('INSERT INTO professores (chapa, senha, nome, sobrenome, coordenador) VALUES (' + mysql.escape(req.body.profId) + ',' + mysql.escape(req.body.defaultPassword) + ',' + mysql.escape(req.body.profName) + ',' + mysql.escape(req.body.profLastname) + ',' + mysql.escape(isCoord) + ');')
 

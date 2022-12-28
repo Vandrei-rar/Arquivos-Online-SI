@@ -24,6 +24,22 @@ app.use(flash())
 // Config session
 app.use(session({secret: 'c6712598023cfa20882b2667006f6c23d8adad65'}))
 
+const hbs = exphbs.create({})
+
+hbs.handlebars.registerHelper( "when", function(operand_1, operator, operand_2, options) {
+    var operators = {
+     'eq': function(l,r) { return l == r; },
+     'noteq': function(l,r) { return l != r; },
+     'gt': function(l,r) { return Number(l) > Number(r); },
+     'or': function(l,r) { return l || r; },
+     'and': function(l,r) { return l && r; },
+     '%': function(l,r) { return (l % r) === 0; }
+    }
+    , result = operators[operator](operand_1,operand_2);
+  
+    if (result) return options.fn(this);
+    else  return options.inverse(this);
+});
 
 app.use('/', route)
 

@@ -4,13 +4,12 @@ const fs = require('fs')
 
 exports.viewFiles = async (req, res) =>{
     let result,
-        qry = "SELECT arquivos.titulo, arquivos.criado_em, materias.nome, materias.fk_professor FROM arquivos INNER JOIN materias, professores WHERE fk_materia = materias.id AND materias.fk_professor = professores.chapa AND professores.nome = " + mysql.escape(req.session.login.nome) + ";"
+        qry = "SELECT arquivos.titulo, arquivos.criado_em, arquivos.descricao, materias.nome, materias.fk_professor FROM arquivos INNER JOIN materias, professores WHERE fk_materia = materias.id AND materias.fk_professor = professores.chapa AND professores.nome = " + mysql.escape(userSession.nome) + ";"
 
     result = await dbcon.queryCmd(qry)
     // SELECT id, titulo FROM arquivos;
 
-    // console.log(result);
-    res.render('./admin/managefile', {findResult: result, displayName: nomes.nome}) // Chamando a página managefile passando o parâmetro 'result' para manipular internamente no handlebars.
+    res.render('./admin/managefile', {findResult: result, displayName: userSession.nome, isCoord: userSession.coordenador}) // Chamando a página managefile passando o parâmetro 'result' para manipular internamente no handlebars.
 }
 
 exports.createFiles = async (req, res) => {
@@ -18,11 +17,11 @@ exports.createFiles = async (req, res) => {
         try {
             // Vetor constante materiaDetector serve para identificar qual a matéria correspondente do professor logado na sessão atual do sistema. Para realizar o insert corretamente e isolar arquivos por matérias e professores. Dessa forma um professor não consegue ver os arquivos dos outros, mantendo a ordem e organização.
             // Utiliza-se um vetor na mesma lógica do arquivo "authcontroller", a resposta do BD chega como um objeto, portanto deve-se manipular com um vetor.
-            const [materiaDetector] = await dbcon.queryCmd("SELECT materias.FK_PROFESSOR FROM materias INNER JOIN professores WHERE materias.FK_PROFESSOR = professores.CHAPA AND professores.nome = " + mysql.escape(req.session.login.nome) + ";")
+            const [materiaDetector] = await dbcon.queryCmd("SELECT materias.FK_PROFESSOR FROM materias INNER JOIN professores WHERE materias.FK_PROFESSOR = professores.CHAPA AND professores.nome = " + mysql.escape(userSession.nome) + ";")
             //console.log(materiaDetector);
 
             // Inserindo arquivos com seus nomes e respectivos locais no servidor, com a separação por matéria.
-            await dbcon.queryCmd('INSERT INTO arquivos (titulo, arquivo, fk_materia) VALUES (' + mysql.escape(req.file.originalname) + ',' + mysql.escape(req.file.destination) + ',' + await materiaDetector['FK_PROFESSOR'] + ');')
+            await dbcon.queryCmd('INSERT INTO arquivos (titulo, arquivo, fk_materia, descricao) VALUES (' + mysql.escape(req.file.originalname) + ',' + mysql.escape(req.file.destination) + ',' + await materiaDetector['FK_PROFESSOR'] + ',' + mysql.escape(req.body.description) + ');')
 
             req.flash('successUpload', 'Arquivo armazenado com sucesso!') // Mensagem flash de sucesso para retorno para o usuário.
             return res.redirect('/adm/managefile')

@@ -13,8 +13,13 @@
             <main>
                 <div class="container-fluid px-4">
                     {{!-- Conteúdo da página abaixo --}}
-                    {{> triggerButtonPopup bootstrapClassBtn="btn-success" icon="fa-solid fa-plus" title="Novo"
-                    target="novoArquivo" }}
+                    {{> triggerButtonPopup
+                        bootstrapClassBtn="btn-success"
+                        icon="fa-solid fa-plus"
+                        title="Novo"
+                        target="novoArquivo"
+                    }}
+
                     <div class="card mb-4">
                         <div class="card-header">
                             <i class="fas fa-table me-1"></i>
@@ -27,6 +32,7 @@
                                         <tr>
                                             <th>Titulo</th>
                                             <th>Matéria</th>
+                                            <th>Descrição</th>
                                             <th>Data de upload</th>
                                         </tr>
                                     </thead>
@@ -36,6 +42,7 @@
                                         <tr>
                                             <td>{{'titulo'}}</td>
                                             <td>{{'nome'}}</td>
+                                            <td>{{'descricao'}}</td>
                                             <td>{{'criado_em'}}</td>
                                             <td class="del-btn">
                                                 <button type="submit" formmethod="post"
@@ -61,6 +68,7 @@
                             <form action="/adm/managefile/create" method="post" enctype="multipart/form-data">
                                 <div class="modal-body">
                                     <input type="file" class="form-control" name="file" id="file"><br>
+                                    <input type="text" class="form-control" name="description" id="description" placeholder="Descrição do arquivo">
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>

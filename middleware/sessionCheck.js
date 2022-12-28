@@ -1,6 +1,6 @@
 
 exports.check = (req, res, next) => {
-    if (req.session.login) { //Validando se o usuário está logado.
+    if (req.session.view) { //Validando se o usuário está logado.
         next()
     } 
     else {
