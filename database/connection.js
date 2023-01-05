@@ -59,7 +59,7 @@ async function queryCmd(cmd) {
 
     try {
         const [response] = await conn.query(cmd)
-        //console.log(response);
+        console.log(response);
         exports.result = response
         return response
     } catch (err) {
