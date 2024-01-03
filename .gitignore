@@ -1,3 +1,6 @@
 # Ignorando config de acesso do DB.
 database/db-conf.json
+uploads/files/
 
+# Ignorando nodemodules
+node_modules/

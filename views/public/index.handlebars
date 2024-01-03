@@ -1,0 +1,23 @@
+<table id="datatablesSimple" class="table table-striped">
+    <thead>
+        <tr>
+            <th>Titulo</th>
+            <th>Matéria</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{#if findResult}}
+            {{#each findResult}}
+            <form action="/download">
+                <tr>
+                    <td>{{'titulo'}}</td>
+                    <td>{{'fk_materia'}}</td>
+                    <td class="del-btn">
+                        <button type="submit">Download<i class="fas fa-cloud-download-alt"></i></button>
+                    </td>
+                </tr>
+            </form>
+            {{/each}}
+        {{/if}}
+    </tbody>
+</table>

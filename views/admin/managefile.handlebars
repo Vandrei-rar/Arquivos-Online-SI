@@ -1,0 +1,122 @@
+<link rel="stylesheet" href="../dash.css">
+
+<body class="sb-nav-fixed">
+
+    {{> navbar}}
+
+    <div id="layoutSidenav">
+
+        {{> dashsidebar}}
+
+
+        <div id="layoutSidenav_content">
+            <main>
+                <div class="container-fluid px-4">
+                    {{!-- Conteúdo da página abaixo --}}
+                    {{> triggerButtonPopup
+                        bootstrapClassBtn="btn-success"
+                        icon="fa-solid fa-plus"
+                        title="Novo"
+                        target="novoArquivo"
+                    }}
+
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <i class="fas fa-table me-1"></i>
+                            Arquivos
+                        </div>
+                        <div class="card-body">
+                            <form>
+                                <table id="datatablesSimple" class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Titulo</th>
+                                            <th>Matéria</th>
+                                            <th>Descrição</th>
+                                            <th>Data de upload</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {{#if findResult}}
+                                        {{#each findResult}}
+                                        <tr>
+                                            <td>{{'titulo'}}</td>
+                                            <td>{{'nome'}}</td>
+                                            <td>{{'descricao'}}</td>
+                                            <td>{{'criado_em'}}</td>
+                                            <td class="del-btn">
+                                                <button type="submit" formmethod="post"
+                                                    formaction="/adm/managefile/delete/{{'titulo'}}"><i class="fas fa-trash"></i></button>
+                                            </td>
+                                        </tr>
+                                        {{/each}}
+                                        {{/if}}
+                                    </tbody>
+                                </table>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pop-up -->
+                <div id="novoArquivo" class="modal">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <p> Novo Arquivo </p>
+                            </div>
+                            <form action="/adm/managefile/create" method="post" enctype="multipart/form-data">
+                                <div class="modal-body">
+                                    <input type="file" class="form-control" name="file" id="file"><br>
+                                    <input type="text" class="form-control" name="description" id="description" placeholder="Descrição do arquivo">
+                                    <br>
+                                    <select name="matery" class="form-select" aria-label="Default select example">
+                                        <option selected>Matéria</option>
+                                        {{#each materies}}
+                                            <option value="{{'id'}}">{{'nome'}}</option>
+                                        {{/each}}
+                                        
+                                    </select>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                    <button type="submit" class="btn btn-success">Criar</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </main>
+            {{> dashfooter}}
+        </div>
+    </div>
+
+    <script src="../dashsidebar.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
+    <script src="assets/demo/chart-area-demo.js"></script>
+    <script src="assets/demo/chart-bar-demo.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" crossorigin="anonymous"></script>
+    <script src="js/datatables-simple-demo.js"></script>
+</body>
+
+
+
+
+
+{{!-- <ul class="people_list">
+    {{#each this}}
+    <li>{{findResult}}</li>
+    {{/each}}
+</ul> --}}
+
+{{#if errorUpload }}
+<!-- #se [houver mensagem de erro passada] -->
+<div class="alert alert-danger">{{errorUpload}}</div>
+{{/if}}
+
+{{#if successUpload }}
+<!-- #se [houver mensagem de sucesso passada] -->
+<div class="alert alert-success">{{successUpload}}</div>
+{{/if}}
