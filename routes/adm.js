@@ -12,19 +12,20 @@ router.get('/', authcontroller.islogged) // Ao entrar na rota principal /adm/, h
 router.post('/login', authcontroller.login) // Rota de login
 router.post('/logout', authcontroller.logout ) // Rota de logout
 
-// CRUD de arquivos
+// Controle de arquivos
 router.get('/managefile', sessionCheck.check, filecontroller.viewFiles)
 router.post('/managefile/create', sessionCheck.check, multer.single('file'), filecontroller.createFiles )
 router.post('/managefile/delete/:titulo', sessionCheck.check, filecontroller.destroyFiles)
 
-// CRUD professores
+// Controle professores
 router.get('/prof', sessionCheck.check, profcontroller.viewProfessors)
 router.post('/prof/create', sessionCheck.check, profcontroller.createProfessors )
 router.post('/prof/delete/:chapa', sessionCheck.check, profcontroller.destroyProfessors )
 
-// CRUD de matérias
+// Controle de matérias
 router.get('/matery', sessionCheck.check, materycontroller.viewMatery )
 router.post('/matery/create', sessionCheck.check, materycontroller.createMatery )
+router.post('/matery/delete/:id', sessionCheck.check, materycontroller.destroyMatery )
 
 
 module.exports = router

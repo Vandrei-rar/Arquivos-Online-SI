@@ -26,3 +26,15 @@ exports.createMatery = async (req, res) => {
     }
     
 }
+
+exports.destroyMatery = async (req, res) => {
+    try {
+        let idMatery = req.params.id
+
+        await dbcon.queryCmd("DELETE FROM materias WHERE id = " + mysql.escape(idMatery))
+        res.redirect('/adm/matery')
+    } catch (err) {
+        console.log("Erro ao excluir matéria")
+    }
+        
+}

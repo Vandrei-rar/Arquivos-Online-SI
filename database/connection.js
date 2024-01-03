@@ -30,13 +30,6 @@ async function connect() { // Funcão principal de conexão com MySQL utilizando
 
 }
 
-
-// async function pesquisaProf() {
-//     const search = await connect()
-
-//     return await search.execute('SELECT * FROM `professores`;')
-// }
-
 async function verifyIdentity(chapa, psswd) { // Indentificando o professor no BD. Com função assíncrona.
     const search = await connect() // Guardando a conexão do banco de dados na constante.
     
@@ -59,7 +52,6 @@ async function queryCmd(cmd) {
 
     try {
         const [response] = await conn.query(cmd)
-        console.log(response);
         exports.result = response
         return response
     } catch (err) {

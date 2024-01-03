@@ -8,12 +8,12 @@
     <tbody>
         {{#if findResult}}
             {{#each findResult}}
-            <form>
+            <form action="/download">
                 <tr>
                     <td>{{'titulo'}}</td>
                     <td>{{'fk_materia'}}</td>
                     <td class="del-btn">
-                        <button type="submit" formmethod="post" formaction="/download/{{titulo}}">AAAAAAAA<i class="fas fa-cloud-download-alt"></i></button>
+                        <button type="submit">Download<i class="fas fa-cloud-download-alt"></i></button>
                     </td>
                 </tr>
             </form>

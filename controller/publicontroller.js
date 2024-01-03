@@ -1,4 +1,5 @@
 const dbcon = require('../database/connection')
+const path = require('path');
 const mysql = require('mysql2/promise')
 const fs = require('fs')
 
@@ -12,15 +13,11 @@ exports.showFiles = async (req, res) => {
     res.render('./public/index', {findResult: result})
 }
 
-exports.downloadFile = (req, res) => {
+exports.downloadFile = async (req, res) => {
 
-    let fileName = req.params.titulo,
-        filePath = req.params.arquivo
+    let fileName = 'note_view.png',
+        filePath = path.join("uploads/files/")
 
-    console.log('fileController.download: started')
-
-    const file = fs.createReadStream('./uploads/files')
-    res.setHeader('Content-Disposition', 'attachment: filename="' + fileName + '"')
-    file.pipe(res)
+    await res.download(filePath + fileName)
 
 }

@@ -9,7 +9,9 @@ exports.viewFiles = async (req, res) =>{
     result = await dbcon.queryCmd(qry)
     // SELECT id, titulo FROM arquivos;
 
-    res.render('./admin/managefile', {findResult: result, displayName: userSession.nome, isCoord: userSession.coordenador}) // Chamando a página managefile passando o parâmetro 'result' para manipular internamente no handlebars.
+    const matery = await dbcon.queryCmd("SELECT materias.id, materias.nome FROM materias INNER JOIN professores WHERE materias.FK_PROFESSOR = professores.CHAPA AND professores.nome = " + mysql.escape(userSession.nome) + ";")
+
+    res.render('./admin/managefile', {findResult: result, displayName: userSession.nome, isCoord: userSession.coordenador, materies: matery}) // Chamando a página managefile passando o parâmetro 'result' para manipular internamente no handlebars.
 }
 
 exports.createFiles = async (req, res) => {
@@ -18,10 +20,9 @@ exports.createFiles = async (req, res) => {
             // Vetor constante materiaDetector serve para identificar qual a matéria correspondente do professor logado na sessão atual do sistema. Para realizar o insert corretamente e isolar arquivos por matérias e professores. Dessa forma um professor não consegue ver os arquivos dos outros, mantendo a ordem e organização.
             // Utiliza-se um vetor na mesma lógica do arquivo "authcontroller", a resposta do BD chega como um objeto, portanto deve-se manipular com um vetor.
             const [materiaDetector] = await dbcon.queryCmd("SELECT materias.FK_PROFESSOR FROM materias INNER JOIN professores WHERE materias.FK_PROFESSOR = professores.CHAPA AND professores.nome = " + mysql.escape(userSession.nome) + ";")
-            //console.log(materiaDetector);
 
             // Inserindo arquivos com seus nomes e respectivos locais no servidor, com a separação por matéria.
-            await dbcon.queryCmd('INSERT INTO arquivos (titulo, arquivo, fk_materia, descricao) VALUES (' + mysql.escape(req.file.originalname) + ',' + mysql.escape(req.file.destination) + ',' + await materiaDetector['FK_PROFESSOR'] + ',' + mysql.escape(req.body.description) + ');')
+            await dbcon.queryCmd('INSERT INTO arquivos (titulo, arquivo, fk_materia, descricao) VALUES (' + mysql.escape(req.file.originalname) + ',' + mysql.escape(req.file.destination) + ',' + mysql.escape(req.body.matery) + ',' + mysql.escape(req.body.description) + ');')
 
             req.flash('successUpload', 'Arquivo armazenado com sucesso!') // Mensagem flash de sucesso para retorno para o usuário.
             return res.redirect('/adm/managefile')

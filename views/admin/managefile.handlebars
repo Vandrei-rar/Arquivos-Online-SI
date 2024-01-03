@@ -69,6 +69,14 @@
                                 <div class="modal-body">
                                     <input type="file" class="form-control" name="file" id="file"><br>
                                     <input type="text" class="form-control" name="description" id="description" placeholder="Descrição do arquivo">
+                                    <br>
+                                    <select name="matery" class="form-select" aria-label="Default select example">
+                                        <option selected>Matéria</option>
+                                        {{#each materies}}
+                                            <option value="{{'id'}}">{{'nome'}}</option>
+                                        {{/each}}
+                                        
+                                    </select>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
